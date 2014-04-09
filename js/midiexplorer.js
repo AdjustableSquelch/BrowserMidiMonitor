@@ -3,10 +3,7 @@
  */
 
 var midi=null;
-var inputs=null;
 var outputs=null;
-var input=null;
-var output=null;
 var midiEvents=null;
 var labelOffset=['label-primary','label-success','label-info','label-warning','label-danger','label-default'];
 var hexDigits='0123456789ABCDEF';
@@ -184,7 +181,7 @@ function handleMIDIMessage( ev ) {
 			break;
 
 		case 0x9:
-			description = ["Note On",numberToNote(ev.data[1]),"Velocity:"+toHexAndDecimal(ev.data[2])];
+			description = [(ev.data[2] == 0)?"Note Off":"Note On",numberToNote(ev.data[1]),"Velocity:"+toHexAndDecimal(ev.data[2])];
 			break;
 
 		case 0xa:
@@ -242,11 +239,9 @@ function handleMIDIMessage( ev ) {
 function setupSuccess( midiAccess ) {
 	midi = midiAccess;
 
-	inputs = midi.inputs();
-	if (inputs.length>0) {
-		input = inputs[0];
-		input.onmidimessage = handleMIDIMessage;
-	}
+	var inputs = midi.inputs();
+	for(var i=0; i<inputs.length;i++ )
+		inputs[i].onmidimessage = handleMIDIMessage;
 
 	outputs = midi.outputs();
 }
