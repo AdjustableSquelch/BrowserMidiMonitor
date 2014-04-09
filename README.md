@@ -1,7 +1,7 @@
 BrowserMidiMonitor
 ==================
 
-Working version: [http://adjustablesquelch.github.io/BrowserMidiMonitor/index.html] (but see Usage below before trying it!)
+Working version: [http://adjustablesquelch.github.io/BrowserMidiMonitor/index.html] but see Usage below before trying it!
 
 
 This project uses the currently experimental MIDI I/O features of HTML5 to implement a midi monitor.
@@ -13,7 +13,11 @@ A program called SoundDiver could edit these via way of a 3097 byte sysex dump, 
 Usage
 -----
 
-So... MIDI is expermintal at the moment. All I can do is tell you what works for me. This runs inside Google Chrome 33.0.1750.154 m on my PC. You will need to enable MIDI support. Click on this link to take you to the settings page [chrome://flags/#enable-web-midi] enable web midi and restart chrome. Hopefully then it will work.
+So... MIDI is expermintal at the moment. All I can do is tell you what works for me. This runs inside Google Chrome 33.0.1750.154 m on my PC. You will need to enable MIDI support. Open the link below inside Chrome to enable MIDI support.
+
+>chrome://flags/#enable-web-midi
+
+And restart chrome. Hopefully then it will work.
 
 When you view the actual web page on chrome for the first time it will ask you if you want to allow full access to midi devices at the very top of the page in a not-very-obvious like gray bar. You will have to allow it access.
 
