@@ -4,10 +4,13 @@
 
 var midi=null;
 var outputs=null;
+var inputs=null;
 var midiEvents=null;
 var labelOffset=['label-primary','label-success','label-info','label-warning','label-danger','label-default'];
 var hexDigits='0123456789ABCDEF';
 var midiEventId=0;
+var sysex=[];
+
 
 function toHex(n) {
 	return "0x"+hexDigits[ n>>4] + hexDigits[n&15];
@@ -218,9 +221,9 @@ function handleMIDIMessage( ev ) {
 
 	}
 
-	if (sysex)
-		messageText += "<td>&nbsp;</td><td>&nbsp;</td><td>"+description+"</td></tr>";
-	else {
+	if (sysex) {
+		messageText += "<td>&nbsp;</td><td>&nbsp;</td><td>" + description + "</td></tr>"+addSysex(ev.data);
+	} else {
 		messageText += "<td>" + midiDataToString(ev.data) + "</td><td>"+channel+"</td>";
 		if (typeof description == "string")
 			messageText+="<td>" + description + "</td>";
@@ -236,15 +239,54 @@ function handleMIDIMessage( ev ) {
 	$('#midiEvent'+midiEventId++)[0].scrollIntoView();
 }
 
+function addSysex(data) {
+
+	var sysexLine = "<tr><td>&nbsp</td><td colspan='7'>"+midiDataToString(data);
+
+	sysexLine+="</td></tr>";
+
+	// look for fizmo
+
+
+
+
+
+	return sysexLine;
+}
+
 function setupSuccess( midiAccess ) {
 	midi = midiAccess;
 
-	var inputs = midi.inputs();
+	inputs = midi.inputs();
+	var monitorPorts=$('#monitorPorts');
+
 	for(var i=0; i<inputs.length;i++ )
-		inputs[i].onmidimessage = handleMIDIMessage;
+		monitorPorts.append("<tr><td><input type='checkbox' class='inputCheck' name='midiInput_"+i+"'>&nbsp;"+inputs[i].id+" "+inputs[i].manufacturer+" "+inputs[i].name+"</td></tr>");
 
 	outputs = midi.outputs();
 }
+
+function monitorAllPorts() {
+	for(var i=0; i<inputs.length;i++ )
+		inputs[i].onmidimessage = handleMIDIMessage;
+}
+
+function monitorSelectedPorts() {
+	var selectedPorts = $('.inputCheck:checked');
+	if (selectedPorts.length==0) {
+		alert("You must select at least one port!");
+		return;
+	}
+
+	selectedPorts.each( function() {
+		var index = $(this)[0].name.split('_');
+		inputs[ index[1] ].onmidimessage = handleMIDIMessage;
+	});
+
+	$('#setup').modal('hide')
+
+}
+
 
 function setupFailure( error ) {
 	alert( "Failed to initialize MIDI - " + ((error.code==1) ? "permission denied" : ("error code " + error.code)) );
