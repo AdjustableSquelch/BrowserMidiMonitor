@@ -56,8 +56,8 @@ MidiOut_USB_Midi=7
 ```
 + Don't change any values (to a 1 or a 7 or anything) for stuff that you want to keep, just disable all the other ports by setting them to 0.
 + Save the file. If it won't let you save, you didn't do 'run as administrator' above.
-+ Spin up SoundDiver, check it can talk to the Fiz.
-+ Run the browser midi monitor and monitor all the other ports.
++ Spin up SoundDiver BEFORE OPENING THE BROWSER, check it can talk to the Fiz.
++ Run the browser and open midi monitor.
 + Change a param inside sounddiver - see the decoded output in the browser.
 
 If that doesn't work, reboot, delete the sounddiver prefs file and start again. Yes it's a real pain :)
