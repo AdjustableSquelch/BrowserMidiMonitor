@@ -20,6 +20,8 @@ Ensoniq Fizmo Decoding
 ----------------------
 Primarily I created this to ease the discovery of features of the superb synthesizer the Ensoniq Fizmo which was rushed into production (due to various issues at the company level) and never had documented a full MIDI spec. Which wouldn't be so bad but there are many paramenters under the hood that you cannot reach from the knobs on the synth. And the only thing that knows about it is an obsolete (and twitchy) program from years ago called SoundDiver.
 
+I am trying to document what I find on the Fizmo MIDI spec at another project you will want to have a look at : https://github.com/AdjustableSquelch/Ensoniq-Fizmo-Midi
+
 As of build 4 (21 Apr 2014) I've added simple decoding of Fizmo sound parameter change sysex messages (doesnt include effects and stuff yet, slightly different message ill look into later). If it detects one of these messages, the param number, length and value are decoded. 
 
 This you can use to see what SoundDiver (SD) is up to. You'll need 2 MIDI ports (either 1 computer 2 ports or 2 computers with a port each. 2 computers if you are using Windows is MUCH easier). Hookup the Fiz midi in and out to one port on the computer. Then hook up the MIDI Thru port from the Fiz to the MIDI in on a second port (or second computer).
