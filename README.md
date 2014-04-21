@@ -22,12 +22,13 @@ Primarily I created this to ease the discovery of features of the superb synthes
 
 As of build 4 (21 Apr 2014) I've added simple decoding of Fizmo sound parameter change sysex messages (doesnt include effects and stuff yet, slightly different message ill look into later). If it detects one of these messages, the param number, length and value are decoded. 
 
-This you can use to see what SoundDiver (SD) is up to. You'll need 2 MIDI ports (either 1 computer 2 ports or 2 computers with a port each. 2 computers is MUCH easier). Hookup the Fiz midi in and out to one port on the computer. Then hook up the MIDI Thru port from the Fiz to the MIDI in on a second port (or second computer).
+This you can use to see what SoundDiver (SD) is up to. You'll need 2 MIDI ports (either 1 computer 2 ports or 2 computers with a port each. 2 computers if you are using Windows is MUCH easier). Hookup the Fiz midi in and out to one port on the computer. Then hook up the MIDI Thru port from the Fiz to the MIDI in on a second port (or second computer).
 
 If you're using 2 computers, great, you can just spin up SoundDiver on one and the brower monitor on the other.
 
-If not, we're going to have to tell SoundDiver not to use the 2nd port. This is a faff. Briefly for Windows...
+If you're using a Mac - it might be ok with one machine. I can see no way of blocking ports in the SD manual, so maybe it will just work?
 
+If not and you're using Windows, we're going to have to tell SoundDiver not to use the 2nd port. This is a faff. Briefly 
 + Make sure the browser isn't running and has control of any of the MIDI ports. Worst case scenario: Reboot.
 + Spin up SoundDiver so it finds all your ports. You could scan for the Fiz now if you want.
 + Quit Sounddiver
