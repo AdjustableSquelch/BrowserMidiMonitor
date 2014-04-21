@@ -12,8 +12,17 @@ var midiEventId=0;
 var sysex=[];
 
 
+// turn a byte into a 2 digit hex number
 function toHex(n) {
 	return "0x"+hexDigits[ n>>4] + hexDigits[n&15];
+}
+
+// take a 32 bit number and convert to padded hex. truncates to 2 byte output if small enough.
+function toHex32(n) {
+	if (n > 0xffff)
+		return "0x"+ (("00000000" + n.toString(16)).substr(-8));
+	else
+		return "0x"+ (("0000" + n.toString(16)).substr(-4));
 }
 
 function toHexAndDecimal(n) {
@@ -239,17 +248,37 @@ function handleMIDIMessage( ev ) {
 	$('#midiEvent'+midiEventId++)[0].scrollIntoView();
 }
 
+//decode 5 bytes of midi data starting at offset into a 32 bit number.
+// see the ensoniq mr-10 sysex spec.
+function ensoniq5to4Decode(data,offset) {
+	return  (data[offset]&0x7f) +
+			((data[offset+1]&0x7f)<<7) +
+			((data[offset+2]&0x7f)<<14) +
+			((data[offset+3]&0x7f)<<21) +
+			((data[offset+4]&0x0f)<<28);
+}
+
 function addSysex(data) {
 
 	var sysexLine = "<tr><td>&nbsp</td><td colspan='7'>"+midiDataToString(data);
-
 	sysexLine+="</td></tr>";
 
-	// look for fizmo
+	//fizmo param change decode....
+	if (data.length==0x1c && data[1]==0xf && data[2]==0x11 && data[3]==0x01 && data[5]==0x05 && data[6]==0x01) {
+		sysexLine+="<tr class='info'><td>&nbsp</td><td>&nbsp</td><td colspan='2'>Fizmo Parameter Change: Sound "+(data[7]+1)+" Oscillator "+(data[10]+1)+"</td>";
+		var param = ensoniq5to4Decode(data,12);
+		var length = ensoniq5to4Decode(data,17);
+		sysexLine+="<td>Param:"+toHex32(param)+" ("+param+") Len:"+length+"</td>";
+		var value = ensoniq5to4Decode(data,22);
 
+		// values are encoded wrong way wrong depending on length
+		if (length==1)
+			value = value >> 24;
+		else if (length==2)
+			value = value >> 16;
 
-
-
+		sysexLine+="<td>Value: "+toHex32(value)+" ("+value+")</td></tr>";
+	}
 
 	return sysexLine;
 }
