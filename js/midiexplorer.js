@@ -264,8 +264,26 @@ function addSysex(data) {
 	sysexLine+="</td></tr>";
 
 	//fizmo param change decode....
-	if (data.length==0x1c && data[1]==0xf && data[2]==0x11 && data[3]==0x01 && data[5]==0x05 && data[6]==0x01) {
-		sysexLine+="<tr class='info'><td>&nbsp</td><td>&nbsp</td><td colspan='2'>Fizmo Parameter Change: Sound "+(data[7]+1)+" Oscillator "+(data[10]+1)+"</td>";
+	if (data.length==0x1c && data[1]==0xf && data[2]==0x11 && data[3]==0x01 && data[5]==0x05) {
+		var cssClass="";
+		var description="unknown Fizmo";
+		if (data[6]==7) {
+			cssClass = "danger";
+			description = "Fizmo Patch Common Parameter Change";
+		} else {
+			if (data[6]==1) {
+				if (data[9]==2) {
+					cssClass = "info";
+					description = "Fizmo Change Osc Parameter: Sound "+(data[7]+1)+" Oscillator "+(data[10]+1)
+				} else if (data[9]==1) {
+					cssClass = "warning";
+					description = "Fizmo Change Sound Common Parameter: Sound " + (data[7] + 1) + " Oscillator " + (data[10] + 1)
+				}
+			}
+
+		}
+
+		sysexLine+="<tr class='"+cssClass+"'><td>&nbsp</td><td>&nbsp</td><td colspan='2'>"+description+"</td>";
 		var param = ensoniq5to4Decode(data,12);
 		var length = ensoniq5to4Decode(data,17);
 		sysexLine+="<td>Param:"+toHex32(param)+" ("+param+") Len:"+length+"</td>";
