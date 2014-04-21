@@ -251,11 +251,11 @@ function handleMIDIMessage( ev ) {
 //decode 5 bytes of midi data starting at offset into a 32 bit number.
 // see the ensoniq mr-10 sysex spec.
 function ensoniq5to4Decode(data,offset) {
-	return  (data[offset]&0x7f) +
-			((data[offset+1]&0x7f)<<7) +
-			((data[offset+2]&0x7f)<<14) +
-			((data[offset+3]&0x7f)<<21) +
-			((data[offset+4]&0x0f)<<28);
+	return  ((data[offset]&0x7f)>>>0) +
+				(((data[offset+1]&0x7f)<<7)>>>0) +
+				(((data[offset+2]&0x7f)<<14)>>>0) +
+				(((data[offset+3]&0x7f)<<21)>>>0) +
+				(((data[offset+4]&0x0f)<<28)>>>0);
 }
 
 function addSysex(data) {
@@ -273,9 +273,9 @@ function addSysex(data) {
 
 		// values are encoded wrong way wrong depending on length
 		if (length==1)
-			value = value >> 24;
+			value = value >>> 24;
 		else if (length==2)
-			value = value >> 16;
+			value = value >>> 16;
 
 		sysexLine+="<td>Value: "+toHex32(value)+" ("+value+")</td></tr>";
 	}
